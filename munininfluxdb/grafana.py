@@ -361,16 +361,17 @@ class GrafanaApi:
         return r.status_code == 200
 
     def create_datasource(self, name, dbname):
-        body = {
-            "name": name,
-            "database": dbname,
-            "type": "influxdb",
-            "url": "http://{0}:{1}".format(self.config.influxdb['host'].rstrip("/"), self.config.influxdb['port']),
-            "user": self.config.influxdb['user'],
-            "password": self.config.influxdb['password'],
-            "access": self.config.grafana['access'],
-            "basicAuth": False
-        }
+        try:
+            body = {
+                "name": name,
+                "database": dbname,
+                "type": "influxdb",
+                "url": "http://{0}:{1}".format(self.config.influxdb['host'].rstrip("/"), self.config.influxdb['port']),
+                "user": self.config.influxdb['user'],
+                "password": self.config.influxdb['password'],
+                "access": self.config.grafana['access'],
+                "basicAuth": False
+            }
         except:
             body = {
                 "name" : "munin",
@@ -380,7 +381,7 @@ class GrafanaApi:
                 "user":"admin",
                 "password":"admin",
                 "access":"proxy",
-                "basicAuth:"False
+                "basicAuth:":False
             }
         r = requests.post(self.host + "/api/datasources", json=body, auth=self.auth)
         return r.ok
