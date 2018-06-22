@@ -1,0 +1,9 @@
+{ 
+     "influxdb" : 
+	{ "host" : "localhost",
+	   "port" : "8086",
+	  "database" : "munin_db",
+	  "user" : "admin",
+	  "passwword" : "admin"
+       } 
+ }

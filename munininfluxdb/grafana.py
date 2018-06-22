@@ -230,6 +230,8 @@ class Dashboard:
         setup['filename'] = None
 
         while not GrafanaApi.test_host(setup['host']) and not setup['filename']:
+            if requests.get(setup['host'].rstrip("/")+"/api/org").status_code == 200 :
+                break
             print("\n{0}We couldn't connect to {1}, please try again or leave empty to save to a local file{2}".format(Symbol.WARN_YELLOW, setup['host'], Color.CLEAR))
             setup['host'] = raw_input("  - host: ").strip() or ""
             if not setup['host']:
@@ -369,11 +371,22 @@ class GrafanaApi:
             "access": self.config.grafana['access'],
             "basicAuth": False
         }
+        except:
+            body = {
+                "name" : "munin",
+                "database" : "munin_db",
+                "type":"influxdb",
+                "url":"http://localhost:8086",
+                "user":"admin",
+                "password":"admin",
+                "access":"proxy",
+                "basicAuth:"False
+            }
         r = requests.post(self.host + "/api/datasources", json=body, auth=self.auth)
         return r.ok
 
     def create_dashboard(self, dashboardJson):
-        r = requests.post(self.host + "/api/dashboards/db", json={"dashboard": dashboardJson}, auth=self.auth)
+        r = requests.post(self.host + "/api/dashboards/db", json={"dashboard": dashboardJson}, auth=auth('admin','admin'))
         if r.ok:
             return "".join([self.host, "/dashboard/db/", r.json()['slug']])
         else:
