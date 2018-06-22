@@ -14,6 +14,9 @@ function launch_install_cron() {
 }
 
 if [[ $1 == "import" ]]; then
+    mkdir /root/.config/
+    cp ./munin-fetch-config.json /root/.config/munin-fetch-config.json
+    pip install setuptools
     shift
     python bin/import.py $@ && launch_install_cron
 elif [[ $1 == "fetch" ]]; then
