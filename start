@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 mkdir /root/.config
 cp ./munin-fetch-config.json /root/.config/munin-fetch-config.json
+service grafana-server start
+service influxdb start
 
 function usage() {
     echo "usage:" $0 "<command> [<options>]"
