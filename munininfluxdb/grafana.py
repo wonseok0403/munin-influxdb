@@ -387,7 +387,7 @@ class GrafanaApi:
         return r.ok
 
     def create_dashboard(self, dashboardJson):
-        r = requests.post(self.host + "/api/dashboards/db", json={"dashboard": dashboardJson}, auth=auth('admin','admin'))
+        r = requests.post(self.host + "/api/dashboards/db", json={"dashboard": dashboardJson}, auth=('admin','admin'))
         if r.ok:
             return "".join([self.host, "/dashboard/db/", r.json()['slug']])
         else:
